@@ -52,3 +52,102 @@ let data = [
 // element.classList.remove(className) - șterge clasa specificată
 // din lista de clase a elementului
 //
+
+function createCardTitle(title) {
+  const header = document.createElement("header");
+  const h2 = document.createElement("h2");
+
+  h2.innerText = title;
+
+  header.append(h2);
+
+  return header;
+}
+
+function createCardImage(imageUrl, alt) {
+  const img = document.createElement("img");
+
+  img.setAttribute("src", imageUrl);
+  img.setAttribute("alt", alt);
+
+  return img;
+}
+
+function createCardContent(content) {
+  const div = document.createElement("div");
+  div.classList.add("content");
+
+  const p = document.createElement("p");
+  p.innerText = content;
+
+  div.append(p);
+
+  return div;
+}
+
+function createCardFooter(isLiked) {
+  const footer = document.createElement("footer");
+  const input = document.createElement("input");
+
+  input.setAttribute("type", "submit");
+  input.setAttribute("value", "");
+
+  if (isLiked) {
+    input.classList.add("liked");
+  } else {
+    input.classList.add("default");
+  }
+
+  footer.append(input);
+
+  return footer;
+}
+
+function createCard(card) {
+  const article = document.createElement("article");
+
+  article.classList.add("card");
+
+  const cardTitle = createCardTitle(card.title);
+  const cardImage = createCardImage(card.imageUrl, card.ImageAltText);
+  const cardContent = createCardContent(card.description);
+  const cardFooter = createCardFooter(card.isLiked);
+
+  article.append(cardTitle);
+  article.append(cardImage);
+  article.append(cardContent);
+  article.append(cardFooter);
+
+  return article;
+}
+
+function createCardsContainer() {
+  const div = document.createElement("div");
+
+  div.classList.add("cards");
+
+  return div;
+}
+
+function handleLikeClick(event) {
+  event.target.classList.toggle("liked");
+}
+
+function loadCards() {
+  const cardsContainer = createCardsContainer();
+
+  data.forEach(cardData => {
+      const card = createCard(cardData);
+      cardsContainer.append(card);
+  });
+
+  document.body.prepend(cardsContainer);
+
+  const likeElements = document.querySelectorAll(".card footer input");
+
+  for (let item of likeElements) {
+      item.addEventListener('click', handleLikeClick);
+  }
+}
+
+document.addEventListener("DOMContentLoaded", loadCards);
